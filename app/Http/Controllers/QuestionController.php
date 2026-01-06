@@ -11,25 +11,30 @@ class QuestionController extends Controller
     public function generate(Request $request, QuestionGenerationService $service)
     {
         $request->validate([
-            'context' => 'required|string|min:50',
+            'questionTypes' => 'required|array|min:1',
+            'questionTypes.*' => 'string',
+
+            'context' => 'nullable|string|min:50',
+            'url' => 'nullable|url',
+            'file' => 'nullable|file|max:25600', // 25MB
         ]);
 
         try {
-            $questions = $service->generateFromContext($request->context);
+            $questions = $service->generate($request);
             Log::info($questions);
-    
-            // TEMP: mock response
+
             return response()->json([
                 'success' => true,
                 'data' => [
                     'questions' => $questions
                 ]
             ]);
-        } catch (\Throwable $th) {
-            Log::info($th->getMessage());
+        } catch (\Throwable $e) {
+            logger()->error($e);
+
             return response()->json([
                 'success' => false,
-                'message' => 'AI generation failed'
+                'message' => 'Question generation failed'
             ], 500);
         }
 
