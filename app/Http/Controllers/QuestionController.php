@@ -21,7 +21,6 @@ class QuestionController extends Controller
 
         try {
             $questions = $service->generate($request);
-            Log::info($questions);
 
             return response()->json([
                 'success' => true,
