@@ -1,8 +1,10 @@
 .git
 .gitignore
 node_modules
+vendor
 npm-debug.log
 yarn-error.log
+public/build
 
 storage/logs
 storage/framework/cache
@@ -11,3 +13,6 @@ storage/framework/views
 
 .env
 .env.*
+tests
+README.md
+prod.dockerfile
