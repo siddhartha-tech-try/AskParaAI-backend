@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('assessments', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->longText('context');
+            $table->longText('context')->nullable();
             $table->string('source_type')->default('text');
             $table->string('model_used');
             $table->timestamps();
