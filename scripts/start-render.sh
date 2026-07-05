@@ -9,8 +9,21 @@ if [ -n "${RENDER_EXTERNAL_HOSTNAME:-}" ] && [ -z "${APP_URL:-}" ]; then
   export APP_URL="https://${RENDER_EXTERNAL_HOSTNAME}"
 fi
 
-if [ -z "${APP_KEY:-}" ]; then
-  echo "APP_KEY is not set. Generating a temporary runtime key."
+is_valid_app_key() {
+  php -r '
+$key = getenv("APP_KEY") ?: "";
+if (! str_starts_with($key, "base64:")) {
+    exit(1);
+}
+$decoded = base64_decode(substr($key, 7), true);
+if ($decoded === false || strlen($decoded) !== 32) {
+    exit(1);
+}
+'
+}
+
+if [ -z "${APP_KEY:-}" ] || ! is_valid_app_key; then
+  echo "APP_KEY is missing or invalid. Generating a runtime key."
   export APP_KEY="base64:$(php -r 'echo base64_encode(random_bytes(32));')"
 fi
 
