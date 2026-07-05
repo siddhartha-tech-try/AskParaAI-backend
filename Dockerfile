@@ -42,6 +42,7 @@ COPY scripts/start-render.sh /usr/local/bin/start-render
 
 RUN chmod +x /usr/local/bin/start-render \
     && mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
+    && rm -f bootstrap/cache/*.php \
     && php artisan package:discover --ansi
 
 EXPOSE 10000

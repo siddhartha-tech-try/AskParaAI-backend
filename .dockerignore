@@ -5,6 +5,7 @@ vendor
 npm-debug.log
 yarn-error.log
 public/build
+bootstrap/cache/*.php
 
 storage/logs
 storage/framework/cache
