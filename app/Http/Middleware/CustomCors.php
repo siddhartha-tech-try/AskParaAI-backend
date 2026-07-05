@@ -11,7 +11,7 @@ class CustomCors
     {
         $response = $next($request);
 
-        $response->headers->set('Access-Control-Allow-Origin', 'http://localhost:5173');
+        $response->headers->set('Access-Control-Allow-Origin', 'https://ask-para-ai-frontend.vercel.app/');
         $response->headers->set(
             'Access-Control-Allow-Methods',
             'GET, POST, PUT, PATCH, DELETE, OPTIONS'
