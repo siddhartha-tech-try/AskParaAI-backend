@@ -30,15 +30,16 @@ FROM php:8.2-cli-alpine
 
 WORKDIR /var/www/html
 
-RUN apk add --no-cache bash icu-data-full libpq sqlite-libs oniguruma \
-    && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS postgresql-dev sqlite-dev oniguruma-dev \
-    && docker-php-ext-install bcmath mbstring pcntl pdo_mysql pdo_pgsql pdo_sqlite \
+RUN apk add --no-cache bash icu-data-full libpq libzip sqlite-libs oniguruma \
+    && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS postgresql-dev libzip-dev sqlite-dev oniguruma-dev \
+    && docker-php-ext-install bcmath mbstring pcntl pdo_mysql pdo_pgsql pdo_sqlite zip \
     && apk del .build-deps
 
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
 COPY --from=frontend /app/public/build ./public/build
 COPY scripts/start-render.sh /usr/local/bin/start-render
+COPY docker/php/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 
 RUN chmod +x /usr/local/bin/start-render \
     && mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
